@@ -21,27 +21,40 @@ public class MatchGameTilesSpawner : MonoBehaviour
     [SerializeField]
     private MatchGameTile _prefab;
 
+    private List<MatchGameTile> _matchTilesPrefabPool = new List<MatchGameTile>();
     private List<MatchTileData> _matchTileDatas = new List<MatchTileData>();
 
     private void Awake()
-    {       
-        foreach(var item in config.Collectables)
+    {
+        _gameManager.SetTilesAmount(_tilesAmount);
+        InitTilesOnBoard();
+        RefreshBoard();
+    }
+
+    public void RefreshBoard()
+    {
+        foreach (var item in config.Collectables)
         {
             _matchTileDatas.Add(item);
             _matchTileDatas.Add(item);
         }
-
-        _tilesAmount = _matchTileDatas.Count;
-        _gameManager.SetTilesAmount(_tilesAmount);
 
         for (int i = 0; i < _tilesAmount; i++)
         {
-            var child = Instantiate(_prefab, _parent.transform);
             var data = _matchTileDatas[Random.Range(0, _matchTileDatas.Count)];
-            child.ID = data.Id;
-            child.FrontSideImage.sprite = data.Sprite;
-            child.GameManager = _gameManager;
+            _matchTilesPrefabPool[i].ID = data.Id;
+            _matchTilesPrefabPool[i].FrontSideImage.sprite = data.Sprite;
+            _matchTilesPrefabPool[i].GameManager = _gameManager;
             _matchTileDatas.Remove(data);
         }
+    }
+
+    private void InitTilesOnBoard()
+    {
+        for(int i = 0; i < _tilesAmount; i++)
+        {
+            var child = Instantiate(_prefab, _parent.transform);
+            _matchTilesPrefabPool.Add(child);
+        }        
     }
 }

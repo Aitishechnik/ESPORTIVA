@@ -9,13 +9,24 @@ using UnityEngine.UI;
 
 public class MatchGameManager : MonoBehaviour
 {
+    private SaveSystem _saveSystem = new SaveSystem();
+    private int _bestSatge;
+
     [SerializeField]
     private float _initialTime;
+
+    private float _stageTime;
+
+    [SerializeField]
+    private MatchGameTilesSpawner _spawner;
 
     private MatchGameTile _pickedTile;
 
     [SerializeField]
     private TextMeshProUGUI _timer;
+
+    [SerializeField]
+    private TextMeshProUGUI _bestStageResultText;
 
     private int _stage = 1;
 
@@ -26,7 +37,14 @@ public class MatchGameManager : MonoBehaviour
 
     private void Awake()
     {
-        _timer.text = $"Stage {_stage}\n\nTimer:  {_initialTime.ToString("F2")}";
+        _bestStageResultText.text = BestStageString(_saveSystem.Load());
+        _stageTime = _initialTime;
+        _timer.text = InitialTimerText();
+    }
+
+    private string InitialTimerText()
+    {
+        return $"Stage {_stage}\n\nTimer:  {_stageTime.ToString("F2")}";
     }
 
     public void SetTilesAmount(int amount)
@@ -52,7 +70,7 @@ public class MatchGameManager : MonoBehaviour
             {
                 tile.Button.gameObject.SetActive(false);
                 _pickedTile = null;
-                _tilesAmount -= 2;
+                _tilesLeft -= 2;
             }
             else
             {
@@ -66,23 +84,59 @@ public class MatchGameManager : MonoBehaviour
     {
         StopCoroutine( _timerCoroutine );
         _timerCoroutine = null;
-
+        _stageTime -= _stage;
+        _tilesLeft = _tilesAmount;       
+        _pickedTile = null;
         _stage++;
-        RefreshMatchTiles?.Invoke();
+        RefreshMatchTiles?.Invoke();        
+        _spawner.RefreshBoard();
+        _timer.text = InitialTimerText();
+        if (_stage > _saveSystem.Load())
+        {
+            _saveSystem.Save(_stage);
+            _bestStageResultText.text = BestStageString(_stage);
+        }
+            
+    }
+
+    private string BestStageString(int bestStage)
+    {
+        return $"Best stage: {bestStage}";
     }
 
     private IEnumerator TimerRoutine()
     {
-        float delta = _initialTime;
+        float delta = _stageTime;
         while (delta > 0)
         {
             delta -= Time.deltaTime;
             _timer.text = $"Stage {_stage}\n\nTimer:  {(delta > 0 ? delta.ToString("F2") : 0)}";
+
             if (_tilesLeft <= 0)
+            {                
                 NextStage();
+            }
+
             yield return null;
         }
+
+        if (delta <= 0)
+        {
+            RestartGame();
+        }        
+    }
+
+    private void RestartGame()
+    {
+        StopCoroutine(_timerCoroutine);
         _timerCoroutine = null;
+        _pickedTile = null;
+        _stageTime = _initialTime;
+        _tilesLeft = _tilesAmount;
+        _stage = 1;
+        RefreshMatchTiles?.Invoke();
+        _spawner.RefreshBoard();        
+        _timer.text = InitialTimerText();
     }
 
     public event Action RefreshMatchTiles;
