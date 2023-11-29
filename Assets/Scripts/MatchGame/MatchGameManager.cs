@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
@@ -16,10 +17,17 @@ public class MatchGameManager : MonoBehaviour
     [SerializeField]
     private TextMeshProUGUI _timer;
 
+    private int _stage = 1;
+
     private int _tilesAmount;
     private int _tilesLeft;
 
     private Coroutine _timerCoroutine;
+
+    private void Awake()
+    {
+        _timer.text = $"Stage {_stage}\n\nTimer:  {_initialTime.ToString("F2")}";
+    }
 
     public void SetTilesAmount(int amount)
     {
@@ -54,8 +62,28 @@ public class MatchGameManager : MonoBehaviour
         }
     }
 
+    private void NextStage()
+    {
+        StopCoroutine( _timerCoroutine );
+        _timerCoroutine = null;
+
+        _stage++;
+        RefreshMatchTiles?.Invoke();
+    }
+
     private IEnumerator TimerRoutine()
     {
-        yield return null;
+        float delta = _initialTime;
+        while (delta > 0)
+        {
+            delta -= Time.deltaTime;
+            _timer.text = $"Stage {_stage}\n\nTimer:  {(delta > 0 ? delta.ToString("F2") : 0)}";
+            if (_tilesLeft <= 0)
+                NextStage();
+            yield return null;
+        }
+        _timerCoroutine = null;
     }
+
+    public event Action RefreshMatchTiles;
 }

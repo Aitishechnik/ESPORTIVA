@@ -23,10 +23,16 @@ public class MatchGameTile : MonoBehaviour
     private void Start()
     {
         _button.onClick.AddListener(OnTileClick);
+        _gameManager.RefreshMatchTiles += RefreshTile;
     }
 
     private void OnTileClick()
     {
         _gameManager.CheckMatch(this);
+    }
+
+    private void RefreshTile()
+    {
+        _button.gameObject.SetActive(true);
     }
 }
