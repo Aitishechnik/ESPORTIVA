@@ -30,19 +30,30 @@ public class MenuManager : MonoBehaviour
     [SerializeField]
     private RectTransform _miniGame;
 
+    [SerializeField]
+    private RectTransform _settings;
+
     private void Awake()
     {
         _activeUI = _mainMenu;
+        _returnButton.gameObject.SetActive(false);
         _miniGameButton.onClick.AddListener(()=> ChangeScreen(_miniGame));
         _returnButton.onClick.AddListener(()=> ChangeScreen(_mainMenu));
+        _settingsButton.onClick.AddListener(()=> ChangeScreen(_settings));
     }
     private void ChangeScreen(RectTransform rect)
-    {
+    {        
         if (_miniGame.gameObject.activeSelf)
             _gameManager.RestartGame();
         SetActiveRecursively(rect, true);
         SetActiveRecursively(_activeUI, false);
-        _activeUI = rect;        
+        _activeUI = rect;
+        SetReturnButton();
+    }
+
+    private void SetReturnButton()
+    {
+        _returnButton.gameObject.SetActive(_activeUI == _mainMenu ? false : true);
     }
 
     private static void SetActiveRecursively(RectTransform obj, bool isActive)

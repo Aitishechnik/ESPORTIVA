@@ -14,7 +14,8 @@ public class MatchGameManager : MonoBehaviour
 
     [SerializeField]
     private float _initialTime;
-
+    [SerializeField]
+    private float _stageTimeInterval = 1;
     private float _stageTime;
 
     [SerializeField]
@@ -84,7 +85,7 @@ public class MatchGameManager : MonoBehaviour
     {
         StopCoroutine( _timerCoroutine );
         _timerCoroutine = null;
-        _stageTime -= _stage;
+        _stageTime -= _stageTimeInterval;
         _tilesLeft = _tilesAmount;       
         _pickedTile = null;
         if (_stage > _saveSystem.Load())
