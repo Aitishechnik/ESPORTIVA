@@ -30,7 +30,6 @@ public class MatchGameTilesSpawner : MonoBehaviour
         InitTilesOnBoard();
         RefreshBoard();
     }
-
     public void RefreshBoard()
     {
         foreach (var item in config.Collectables)

@@ -87,15 +87,16 @@ public class MatchGameManager : MonoBehaviour
         _stageTime -= _stage;
         _tilesLeft = _tilesAmount;       
         _pickedTile = null;
-        _stage++;
-        RefreshMatchTiles?.Invoke();        
-        _spawner.RefreshBoard();
-        _timer.text = InitialTimerText();
         if (_stage > _saveSystem.Load())
         {
             _saveSystem.Save(_stage);
             _bestStageResultText.text = BestStageString(_stage);
         }
+        _stage++;
+        RefreshMatchTiles?.Invoke();        
+        _spawner.RefreshBoard();
+        _timer.text = InitialTimerText();
+        
             
     }
 
