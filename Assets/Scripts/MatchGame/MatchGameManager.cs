@@ -127,9 +127,10 @@ public class MatchGameManager : MonoBehaviour
         }        
     }
 
-    private void RestartGame()
+    public void RestartGame()
     {
-        StopCoroutine(_timerCoroutine);
+        if (_timerCoroutine != null)
+            StopCoroutine(_timerCoroutine);
         _timerCoroutine = null;
         _pickedTile = null;
         _stageTime = _initialTime;

@@ -33,14 +33,16 @@ public class MenuManager : MonoBehaviour
     private void Awake()
     {
         _activeUI = _mainMenu;
-        _miniGameButton.onClick.AddListener(()=> StartMiniGame(_miniGame));
-        _returnButton.onClick.AddListener(() => StartMiniGame(_mainMenu));
+        _miniGameButton.onClick.AddListener(()=> ChangeScreen(_miniGame));
+        _returnButton.onClick.AddListener(()=> ChangeScreen(_mainMenu));
     }
-    private void StartMiniGame(RectTransform rect)
+    private void ChangeScreen(RectTransform rect)
     {
+        if (_miniGame.gameObject.activeSelf)
+            _gameManager.RestartGame();
         SetActiveRecursively(rect, true);
         SetActiveRecursively(_activeUI, false);
-        _activeUI = rect;
+        _activeUI = rect;        
     }
 
     private static void SetActiveRecursively(RectTransform obj, bool isActive)
