@@ -6,24 +6,6 @@ using UnityEngine;
 
 public class SaveSystem
 {
-    /*private static SaveSystem _instance;
-
-    public static SaveSystem Instance
-    {
-        get
-        {
-            if (_instance == null)
-                _instance = new SaveSystem();
-
-            return _instance;
-        }
-    }
-
-    private SaveSystem()
-    {
-
-    }*/
-
     public void Save(int bestStage)
     {
         BinaryFormatter formatter = new BinaryFormatter();

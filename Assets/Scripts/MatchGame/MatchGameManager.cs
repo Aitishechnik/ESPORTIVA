@@ -10,7 +10,6 @@ using UnityEngine.UI;
 public class MatchGameManager : MonoBehaviour
 {
     private SaveSystem _saveSystem = new SaveSystem();
-    private int _bestSatge;
 
     [SerializeField]
     private float _initialTime;
@@ -29,7 +28,8 @@ public class MatchGameManager : MonoBehaviour
     [SerializeField]
     private TextMeshProUGUI _bestStageResultText;
 
-    private int _stage = 1;
+    private const int INITIAL_STAGE = 1;
+    private int _stage = INITIAL_STAGE;
 
     private int _tilesAmount;
     private int _tilesLeft;
@@ -96,9 +96,7 @@ public class MatchGameManager : MonoBehaviour
         _stage++;
         RefreshMatchTiles?.Invoke();        
         _spawner.RefreshBoard();
-        _timer.text = InitialTimerText();
-        
-            
+        _timer.text = InitialTimerText();      
     }
 
     private string BestStageString(int bestStage)
@@ -136,7 +134,7 @@ public class MatchGameManager : MonoBehaviour
         _pickedTile = null;
         _stageTime = _initialTime;
         _tilesLeft = _tilesAmount;
-        _stage = 1;
+        _stage = INITIAL_STAGE;
         RefreshMatchTiles?.Invoke();
         _spawner.RefreshBoard();        
         _timer.text = InitialTimerText();
