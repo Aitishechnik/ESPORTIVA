@@ -443,6 +443,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3f3d6f34f023b9b4c997eea0b56e52d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _mainMenuElemets:
+  - {fileID: 141142231}
+  - {fileID: 1374015013}
+  - {fileID: 1607275054}
+  - {fileID: 1103583979}
+  - {fileID: 333706188}
+  - {fileID: 2037311747}
+  - {fileID: 384900265}
+  - {fileID: 85650822}
+  - {fileID: 1366782480}
+  _miniGameButton: {fileID: 333706190}
+  _matchesButton: {fileID: 1607275056}
+  _settingsButton: {fileID: 384900267}
+  _gameManager: {fileID: 919002411}
+  _mainMenu: {fileID: 1374015014}
+  _miniGame: {fileID: 725402270}
 --- !u!4 &319786981
 Transform:
   m_ObjectHideFlags: 0
@@ -471,7 +487,7 @@ GameObject:
   - component: {fileID: 333706191}
   - component: {fileID: 333706190}
   m_Layer: 5
-  m_Name: MatchesButton
+  m_Name: MiniGameButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1557,7 +1573,7 @@ GameObject:
   - component: {fileID: 1607275057}
   - component: {fileID: 1607275056}
   m_Layer: 5
-  m_Name: MiniGameButton
+  m_Name: MatchesButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
